@@ -1,73 +1,31 @@
-# React + TypeScript + Vite
+# CryptoTracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación para visualizar el top de criptomonedas con precio actual, variación 24h y un mini gráfico (sparkline). Permite alternar rápidamente entre USD y CLP y actualiza los datos de forma adaptativa para respetar el rate limit de la API.
 
-Currently, two official plugins are available:
+## Tecnologías utilizadas
+- React + TypeScript
+- Vite
+- Tailwind CSS
+- lucide-react (iconos)
+- CoinGecko API (datos de mercado)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Características
+- Tarjetas responsivas con estilo glassmorphism.
+- Alternancia USD/CLP con formateo local de moneda.
+- Sparkline de 7 días por moneda.
+- Skeleton de carga y auto-actualización con backoff ante 429.
 
-## React Compiler
+## Desarrollo
+1. Instalar dependencias:
+   ```
+   npm install
+   ```
+2. Levantar servidor:
+   ```
+   npm run dev
+   ```
+3. Abrir en el navegador:
+   - http://127.0.0.1:5173/
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Notas
+- Para mejor compatibilidad de herramientas se recomienda Node.js 18 o superior.
