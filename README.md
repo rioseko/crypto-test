@@ -24,7 +24,7 @@ Aplicación para visualizar el top de criptomonedas con precio actual, variació
    ```
    npm run dev
    ```
-3. Abrir en el navegador:
+3. Abrir en el navegador local:
    - http://127.0.0.1:5173/
 
 ## Notas
