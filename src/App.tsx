@@ -12,6 +12,7 @@ type MarketCoin = {
   current_price: number
   price_change_percentage_24h: number
   sparkline_in_7d?: { price: number[] }
+  market_cap?: number
 }
  
 function formatCurrency(value: number, currency: Currency) {
@@ -55,7 +56,7 @@ function useMarkets(currency: Currency) {
         const params = new URLSearchParams({
           vs_currency: currency,
           order: 'market_cap_desc',
-          per_page: '5',
+          per_page: '10',
           page: '1',
           sparkline: 'true',
         })
@@ -63,8 +64,29 @@ function useMarkets(currency: Currency) {
         const res = await fetch(url, { signal: controller.signal })
         if (!res.ok) throw new Error(`HTTP ${res.status}`)
         const json: MarketCoin[] = await res.json()
+        let filtered = json.filter(
+          (c) => c.id !== 'tether' && c.symbol.toLowerCase() !== 'usdt'
+        )
+        const hasSol = filtered.some((c) => c.id === 'solana')
+        if (!hasSol) {
+          const solParams = new URLSearchParams({
+            vs_currency: currency,
+            ids: 'solana',
+            sparkline: 'true',
+          })
+          const solUrl = `https://api.coingecko.com/api/v3/coins/markets?${solParams.toString()}`
+          const solRes = await fetch(solUrl, { signal: controller.signal })
+          if (solRes.ok) {
+            const solJson: MarketCoin[] = await solRes.json()
+            if (solJson[0]) filtered = [...filtered, solJson[0]]
+          }
+        }
+        filtered.sort(
+          (a, b) => (b.market_cap ?? 0) - (a.market_cap ?? 0)
+        )
+        const top5 = filtered.slice(0, 5)
         if (mounted) {
-          setData(json)
+          setData(top5)
           setRefreshMs(BASE_MS)
         }
       } catch (e: any) {
